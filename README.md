@@ -71,6 +71,36 @@ Das Projekt wird mit **Visual Studio Code** und der Erweiterung **PlatformIO** k
    board = seeed_xiao_esp32c3
    framework = arduino
    monitor_speed = 115200
+   board_build.filesystem = littlefs
+   build_flags = 
+       -D ARDUINO_USB_MODE=1
+       -D ARDUINO_USB_CDC_ON_BOOT=1
    lib_deps = 
-       adafruit/Adafruit BME280 Library
-       adafruit/Adafruit Unified Sensor
+       adafruit/Adafruit BME280 Library@^2.2.4
+       adafruit/Adafruit Unified Sensor@^1.1.14
+   ```
+3. Kopiere den Inhalt von `src/main.cpp` in dein Projekt.
+4. Schließe den XIAO ESP32C3 per USB-C an und klicke in PlatformIO auf **Upload**.
+
+---
+
+## 📖 Benutzung
+
+### Normalbetrieb (Batterie)
+Nach dem Flashen arbeitet der Logger vollautomatisch:
+* Alle **15 Minuten** wacht er auf, misst und speichert die Daten.
+* Die eingebaute **LED blinkt 5×**, wenn der Sensor nicht gefunden wurde.
+* Die LED blinkt **10×**, wenn der Flash-Speicher fast voll ist.
+
+### Daten auslesen (USB)
+1. Verbinde den XIAO per USB-C mit dem Computer.
+2. Öffne einen seriellen Monitor (z.B. in PlatformIO) mit **115200 Baud**.
+3. Drücke den **Reset-Button** auf dem XIAO.
+4. Innerhalb von 10 Sekunden stehen folgende Befehle zur Verfügung:
+
+| Befehl | Funktion |
+| :--- | :--- |
+| `d` | Alle gespeicherten Messdaten als CSV ausgeben |
+| `c` | Alle Daten und den Boot-Counter löschen |
+| `s` | Status anzeigen (Speicherplatz, Boot-Counter) |
+| `x` | Sofort in den Deep Sleep wechseln |
